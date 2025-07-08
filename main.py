@@ -44,12 +44,7 @@ def add_document_to_collection(collection, doc: Document):
         embeddings=[embadding] 
     )
 
-if __name__ == "__main__":
-    get_all_collections()
-    collection_name = "sample_collection"
-    collection = create_new_collection(collection_name=collection_name)
-    # sample_doc = Document(document_id="doc1", document_data="This is a sample document.")
-
+def add_and_reterive_docs(collection):
     for record in generate_student_records(num_students=5):
         doc = Document(document_id=record['student_id'], document_data=str(record))
         add_document_to_collection(collection, doc=doc)
@@ -59,4 +54,34 @@ if __name__ == "__main__":
     for doc_id, doc_data in zip(documents.get('ids', []), documents.get('documents', [])):
         print(f"Document ID: {doc_id}, Data: {doc_data}")
 
+if __name__ == "__main__":
+    get_all_collections()
+    collection_name = "sample_collection"
+    collection = create_new_collection(collection_name=collection_name)
+    # sample_doc = Document(document_id="doc1", document_data="This is a sample document.")
+
+    # add_and_reterive_docs(collection)
+
+    # data = collection.query(
+    #     query_embeddings=[generate_embedding("124 Maple Dr")],
+    #     n_results=2
+    # )
+
+    # Retrieve document(s) from sample_collection where address is "124 Maple Dr"
+    # all_docs = collection.get()
+    # for doc_id, doc_data in zip(all_docs.get('ids', []), all_docs.get('documents', [])):
+    #     if "124 Maple Dr" in doc_data:
+    #         print(f"Found document with address '124 Maple Dr': ID={doc_id}, Data={doc_data}")
+
+    # Perform similarity search for the address "124 Maple Dr"
+    # query_embedding = generate_embedding("124 Maple Dr")
+    # results = collection.query(
+    #     query_embeddings=[query_embedding],
+    #     n_results=3
+    # )
+    # print("Similarity Search Results for '124 Maple Dr':", results.get('documents', []))
+
     # print("Retrieved Documents:", all_documents)
+
+    results = collection.get(ids=["S001", "S002", "S003"])  # Example of retrieving specific documents by IDs
+    print("Retrieved Documents by IDs:", results.get('documents', []))
